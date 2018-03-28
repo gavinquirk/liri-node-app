@@ -10,14 +10,13 @@ var inq = require('inquirer')
 var pmpt = inq.createPromptModule()
 var fs = require('fs')
 
-
-
-
 // TWITTER
 if (process.argv[2] === 'my-tweets') {
     var params = { screen_name: 'gqtw10' };
     client.get('statuses/user_timeline', params, function (error, tweets, response) {
-        if (!error) {
+        if (error) {
+            console.log('Error Occurred: ' + error)
+        } else {
             for (var i = 0; i < 3; i++) { //SET AMOUNT OF TWEETS
                 console.log(tweets[i].text)
                 console.log(tweets[i].created_at)
@@ -30,9 +29,9 @@ if (process.argv[2] === 'my-tweets') {
 
     var userInput = process.argv[3]
 
-    spotify.search({ type: 'track', query: userInput, limit: '1' }, function (err, data) {
-        if (err) {
-            return console.log('Error occurred: ' + err);
+    spotify.search({ type: 'track', query: userInput, limit: '1' }, function (error, data) {
+        if (error) {
+            console.log('Error Occurred: ' + error);
         } else {
             console.log('Artist Name: ' + data.tracks.items[0].artists[0].name); //artist name
             console.log('Song Name: ' + data.tracks.items[0].name); //song name
@@ -47,7 +46,7 @@ if (process.argv[2] === 'my-tweets') {
     var request = require('request')
     request('https://www.omdbapi.com/?t=' + movieQuery + '&y=&plot=short&apikey=trilogy', function (error, response, body) {
         if (error) {
-            return console.log('Error occurred: ' + error)
+            console.log('Error Occurred: ' + error)
         } else {
         var movie = JSON.parse(body)
         console.log('Title: ' + movie.Title)
@@ -61,6 +60,9 @@ if (process.argv[2] === 'my-tweets') {
         }
     })
 }
+
+
+
 
 
 // DO WHAT IT SAYS
