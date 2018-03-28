@@ -1,4 +1,5 @@
 
+// Variables for npm use
 require("dotenv").config()
 var keys = require('./keys')
 var Twitter = require('twitter')
@@ -18,25 +19,8 @@ if (process.argv[2] === 'my-tweets') {
 } else if (process.argv[2] === 'movie-this') {
     movieThis(process.argv[3])
 } else if (process.argv[2] === 'do-what-it-says') {
-
-
-    console.log("doing what it says...")
-    var filename = 'random.txt'
-    fs.readFile(filename, 'utf8', function (error, data) {
-        if (error) {
-            console.log(error)
-        } else {
-            var instructions = data.split(',')
-            var command = instructions[0]
-            var query = instructions[1]
-            console.log(command)
-            console.log(query)
-            // if (command === )
-
-        }
-    })
+    doWhatItSays()
 }
-
 
 // My Tweets Function
 function myTweets() {
@@ -46,8 +30,8 @@ function myTweets() {
             console.log('Error Occurred: ' + error)
         } else {
             for (var i = 0; i < tweets.length && i < 20; i++) { //SET AMOUNT OF TWEETS
-                console.log(tweets[i].text)
                 console.log(tweets[i].created_at)
+                console.log(tweets[i].text)
             }
         }
     })
@@ -87,31 +71,23 @@ function movieThis(movieQuery) {
     })
 }
 
-
-
-
-
-
-
-// DO WHAT IT SAYS
-// if (process.argv[2] === 'do-what-it-says') {
-//     var filename = 'random.txt'
-//     fs.readFile(filename, 'utf8', function (err, data) {
-//         if (err) throw err
-//         var instructions = data.split(',')
-//         var command = instructions[0]
-//         var query = instructions[1]
-//         console.log(command)
-//         console.log(query)
-//     var query =
-//         spotify.search({ type: 'track', query: songQuery, limit: '1' }, function (err, data) {
-//             if (err) {
-//                 return console.log('Error occurred: ' + err);
-//             }
-//             console.log('Artist Name: ' + data.tracks.items[0].artists[0].name); //artist name
-//             console.log('Song Name: ' + data.tracks.items[0].name); //song name
-//             console.log('Album Name: ' + data.tracks.items[0].album.name) //album name
-//             console.log('Preview URL: ' + data.tracks.items[0].preview_url); //preview url
-//         })
-//     })
-// }
+// Do What It Says Function
+function doWhatItSays() {
+    var filename = 'random.txt'
+    fs.readFile(filename, 'utf8', function (error, data) {
+        if (error) {
+            console.log(error)
+        } else {
+            var instructions = data.split(',')
+            var command = instructions[0]
+            var query = instructions[1]
+            if (command === 'my-tweets') {
+                myTweets()
+            } else if (command === 'spotify-this-song') {
+                spotifyThisSong(query)
+            } else if (command === 'movie-this') {
+                movieThis(query)
+            }
+        }
+    })
+}
