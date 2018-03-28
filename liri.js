@@ -10,26 +10,52 @@ var inq = require('inquirer')
 var pmpt = inq.createPromptModule()
 var fs = require('fs')
 
-// TWITTER
+// Conditionals to listen for user command
 if (process.argv[2] === 'my-tweets') {
+    myTweets()
+} else if (process.argv[2] === 'spotify-this-song') {
+    spotifyThisSong(process.argv[3])
+} else if (process.argv[2] === 'movie-this') {
+    movieThis(process.argv[3])
+} else if (process.argv[2] === 'do-what-it-says') {
+
+
+    console.log("doing what it says...")
+    var filename = 'random.txt'
+    fs.readFile(filename, 'utf8', function (error, data) {
+        if (error) {
+            console.log(error)
+        } else {
+            var instructions = data.split(',')
+            var command = instructions[0]
+            var query = instructions[1]
+            console.log(command)
+            console.log(query)
+            // if (command === )
+
+        }
+    })
+}
+
+
+// My Tweets Function
+function myTweets() {
     var params = { screen_name: 'gqtw10' };
     client.get('statuses/user_timeline', params, function (error, tweets, response) {
         if (error) {
             console.log('Error Occurred: ' + error)
         } else {
-            for (var i = 0; i < 3; i++) { //SET AMOUNT OF TWEETS
+            for (var i = 0; i < tweets.length && i < 20; i++) { //SET AMOUNT OF TWEETS
                 console.log(tweets[i].text)
                 console.log(tweets[i].created_at)
             }
         }
     })
+}
 
-    // SPOTIFY
-} else if (process.argv[2] === 'spotify-this-song') {
-
-    var userInput = process.argv[3]
-
-    spotify.search({ type: 'track', query: userInput, limit: '1' }, function (error, data) {
+// Spotify This Song Function
+function spotifyThisSong(songQuery) {
+    spotify.search({ type: 'track', query: songQuery, limit: '1' }, function (error, data) {
         if (error) {
             console.log('Error Occurred: ' + error);
         } else {
@@ -39,27 +65,29 @@ if (process.argv[2] === 'my-tweets') {
             console.log('Preview URL: ' + data.tracks.items[0].preview_url); //preview url
         }
     })
+}
 
-    // OMDB
-} else if (process.argv[2] === 'movie-this') {
-    var movieQuery = process.argv[3]
+// Movie This Function
+function movieThis(movieQuery) {
     var request = require('request')
     request('https://www.omdbapi.com/?t=' + movieQuery + '&y=&plot=short&apikey=trilogy', function (error, response, body) {
         if (error) {
             console.log('Error Occurred: ' + error)
         } else {
-        var movie = JSON.parse(body)
-        console.log('Title: ' + movie.Title)
-        console.log('Release Year: ' + movie.Year)
-        console.log('IMDB Rating: ' + movie.imdbRating)
-        console.log('Rotten Tomatoes Rating: ' + movie.Ratings[1].Value)
-        console.log('Country of Origin: ' + movie.Country)
-        console.log('Language: ' + movie.Language)
-        console.log('Plot: ' + movie.Plot)
-        console.log('Actors: ' + movie.Actors)
+            var movie = JSON.parse(body)
+            console.log('Title: ' + movie.Title)
+            console.log('Release Year: ' + movie.Year)
+            console.log('IMDB Rating: ' + movie.imdbRating)
+            console.log('Rotten Tomatoes Rating: ' + movie.Ratings[1].Value)
+            console.log('Country of Origin: ' + movie.Country)
+            console.log('Language: ' + movie.Language)
+            console.log('Plot: ' + movie.Plot)
+            console.log('Actors: ' + movie.Actors)
         }
     })
 }
+
+
 
 
 
@@ -72,11 +100,11 @@ if (process.argv[2] === 'my-tweets') {
 //         if (err) throw err
 //         var instructions = data.split(',')
 //         var command = instructions[0]
-//         var target = instructions[1]
+//         var query = instructions[1]
 //         console.log(command)
-//         console.log(target)
+//         console.log(query)
 //     var query =
-//         spotify.search({ type: 'track', query: userInput, limit: '1' }, function (err, data) {
+//         spotify.search({ type: 'track', query: songQuery, limit: '1' }, function (err, data) {
 //             if (err) {
 //                 return console.log('Error occurred: ' + err);
 //             }
