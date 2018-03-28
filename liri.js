@@ -10,6 +10,7 @@ var client = new Twitter(keys.twitter);
 var inq = require('inquirer')
 var pmpt = inq.createPromptModule()
 var fs = require('fs')
+var request = require('request')
 
 // Conditionals to listen for user command
 if (process.argv[2] === 'my-tweets') {
@@ -39,6 +40,9 @@ function myTweets() {
 
 // Spotify This Song Function
 function spotifyThisSong(songQuery) {
+    if (songQuery === undefined) {
+        var songQuery = "The Sign"
+    }
     spotify.search({ type: 'track', query: songQuery, limit: '1' }, function (error, data) {
         if (error) {
             console.log('Error Occurred: ' + error);
@@ -53,22 +57,24 @@ function spotifyThisSong(songQuery) {
 
 // Movie This Function
 function movieThis(movieQuery) {
-    var request = require('request')
-    request('https://www.omdbapi.com/?t=' + movieQuery + '&y=&plot=short&apikey=trilogy', function (error, response, body) {
-        if (error) {
-            console.log('Error Occurred: ' + error)
-        } else {
-            var movie = JSON.parse(body)
-            console.log('Title: ' + movie.Title)
-            console.log('Release Year: ' + movie.Year)
-            console.log('IMDB Rating: ' + movie.imdbRating)
-            console.log('Rotten Tomatoes Rating: ' + movie.Ratings[1].Value)
-            console.log('Country of Origin: ' + movie.Country)
-            console.log('Language: ' + movie.Language)
-            console.log('Plot: ' + movie.Plot)
-            console.log('Actors: ' + movie.Actors)
-        }
-    })
+    if (movieQuery === undefined) {
+        var movieQuery = 'Mr. Nobody'
+    }
+        request('https://www.omdbapi.com/?t=' + movieQuery + '&y=&plot=short&apikey=trilogy', function (error, response, body) {
+            if (error) {
+                console.log('Error Occurred: ' + error)
+            } else {
+                var movie = JSON.parse(body)
+                console.log('Title: ' + movie.Title)
+                console.log('Release Year: ' + movie.Year)
+                console.log('IMDB Rating: ' + movie.imdbRating)
+                console.log('Rotten Tomatoes Rating: ' + movie.Ratings[1].Value)
+                console.log('Country of Origin: ' + movie.Country)
+                console.log('Language: ' + movie.Language)
+                console.log('Plot: ' + movie.Plot)
+                console.log('Actors: ' + movie.Actors)
+            }
+        })
 }
 
 // Do What It Says Function
