@@ -13,7 +13,7 @@ var fs = require('fs')
 
 
 
-/* // TWITTER
+// TWITTER
 if (process.argv[2] === 'my-tweets') {
     var params = { screen_name: 'gqtw10' };
     client.get('statuses/user_timeline', params, function (error, tweets, response) {
@@ -34,23 +34,32 @@ if (process.argv[2] === 'my-tweets') {
         if (err) {
             return console.log('Error occurred: ' + err);
         } else {
-        console.log('Artist Name: ' + data.tracks.items[0].artists[0].name); //artist name
-        console.log('Song Name: ' + data.tracks.items[0].name); //song name
-        console.log('Album Name: ' + data.tracks.items[0].album.name) //album name
-        console.log('Preview URL: ' + data.tracks.items[0].preview_url); //preview url
+            console.log('Artist Name: ' + data.tracks.items[0].artists[0].name); //artist name
+            console.log('Song Name: ' + data.tracks.items[0].name); //song name
+            console.log('Album Name: ' + data.tracks.items[0].album.name) //album name
+            console.log('Preview URL: ' + data.tracks.items[0].preview_url); //preview url
         }
     })
 
     // OMDB
-} else  */if (process.argv[3] === 'movie-this') {
-
-    console.log('movieing this')
-var movie = 'goodfellas'
-var request = require('request')
-request('https://www.omdbapi.com/?t=' + movie + '&y=&plot=short&apikey=trilogy', function (error, response, body) {
-  console.log('error:', error); // Print the error if one occurred
-  console.log(JSON.parse(body).Title)
-})
+} else if (process.argv[2] === 'movie-this') {
+    var movieQuery = process.argv[3]
+    var request = require('request')
+    request('https://www.omdbapi.com/?t=' + movieQuery + '&y=&plot=short&apikey=trilogy', function (error, response, body) {
+        if (error) {
+            return console.log('Error occurred: ' + error)
+        } else {
+        var movie = JSON.parse(body)
+        console.log('Title: ' + movie.Title)
+        console.log('Release Year: ' + movie.Year)
+        console.log('IMDB Rating: ' + movie.imdbRating)
+        console.log('Rotten Tomatoes Rating: ' + movie.Ratings[1].Value)
+        console.log('Country of Origin: ' + movie.Country)
+        console.log('Language: ' + movie.Language)
+        console.log('Plot: ' + movie.Plot)
+        console.log('Actors: ' + movie.Actors)
+        }
+    })
 }
 
 
